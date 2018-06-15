@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -17,9 +18,18 @@ namespace ARCX.Core.Archive
 
 		public ulong Offset { get; protected set; }
 
-		protected ArcXFile()
+		internal ArcXFile(Stream stream, bool closeStream = true)
 		{
+			BinaryReader reader = new BinaryReader(stream, Encoding.Unicode);
 
+			Filename = reader.ReadString();
+			ChunkID = reader.ReadInt32();
+			ContentType = (ContentType)reader.ReadUInt16();
+			Offset = reader.ReadUInt64();
+			Size = reader.ReadUInt64();
+
+			if (closeStream)
+				reader.Close();
 		}
 	}
 }

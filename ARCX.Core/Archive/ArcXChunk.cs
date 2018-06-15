@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -7,6 +8,8 @@ namespace ARCX.Core.Archive
 {
 	public class ArcXChunk
 	{
+		public int ID { get; protected set; }
+
 		public CompressionType CompressionType { get; protected set; }
 
 		public CompressionFlags CompressionFlags { get; protected set; }
@@ -19,9 +22,20 @@ namespace ARCX.Core.Archive
 
 		public ulong UncompressedLength { get; protected set; }
 
-		protected ArcXChunk()
+		internal ArcXChunk(Stream stream, bool closeStream = true)
 		{
+			BinaryReader reader = new BinaryReader(stream, Encoding.Unicode);
 
+			ID = reader.ReadInt32();
+			CompressionType = (CompressionType)reader.ReadByte();
+			CompressionFlags = (CompressionFlags)reader.ReadByte();
+			Crc32 = reader.ReadUInt32();
+			Offset = reader.ReadUInt64();
+			CompressedLength = reader.ReadUInt64();
+			UncompressedLength = reader.ReadUInt64();
+
+			if (closeStream)
+				reader.Close();
 		}
 	}
 }
