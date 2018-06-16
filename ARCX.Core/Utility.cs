@@ -19,5 +19,14 @@ namespace ARCX.Core
 				destination.Write(buffer, 0, read);
 			}
 		}
+
+		public static byte[] ToBytes(this Stream stream)
+		{
+			byte[] buffer = new byte[stream.Length - stream.Position];
+
+			stream.Read(buffer, 0, (int)(stream.Length - stream.Position));
+
+			return buffer;
+		}
 	}
 }

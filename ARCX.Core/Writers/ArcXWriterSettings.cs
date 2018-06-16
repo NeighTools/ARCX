@@ -4,11 +4,11 @@ namespace ARCX.Core.Writers
 {
 	public class ArcXWriterSettings
 	{
-		public CompressionType CompressionType { get; set; } = CompressionType.LZ4;
+		public CompressionType CompressionType { get; set; } = CompressionType.Zstd;
 
 		public CompressionFlags CompressionFlags { get; set; } = CompressionFlags.None;
 
-		public int CompressionLevel { get; set; } = 1;
+		public int CompressionLevel { get; set; } = 3;
 
 		public int Threads { get; set; } = 1;
 

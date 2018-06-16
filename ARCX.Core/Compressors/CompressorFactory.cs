@@ -11,6 +11,8 @@ namespace ARCX.Core.Compressors
 			{
 				case CompressionType.LZ4:
 					return new LZ4Compressor(source, compressionLevel);
+				case CompressionType.Zstd:
+					return new ZstdCompressor(source, compressionLevel);
 				case CompressionType.Uncompressed:
 				default:
 					return new PassthroughCompressor(source);
@@ -23,6 +25,8 @@ namespace ARCX.Core.Compressors
 			{
 				case CompressionType.LZ4:
 					return new LZ4Decompressor(source);
+				case CompressionType.Zstd:
+					return new ZstdDecompressor(source);
 				case CompressionType.Uncompressed:
 				default:
 					return new PassthroughCompressor(source);

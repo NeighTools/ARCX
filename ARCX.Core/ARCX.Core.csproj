@@ -54,9 +54,19 @@
     <Compile Include="Compressors\CompressorFactory.cs" />
     <Compile Include="Compressors\ICompressor.cs" />
     <Compile Include="Compressors\IDecompressor.cs" />
+    <Compile Include="Compressors\ZstdCompressor.cs" />
     <Compile Include="Compressors\LZ4Compressor.cs" />
     <Compile Include="Compressors\PassthroughCompressor.cs" />
-    <Compile Include="External\CRC32.cs" />
+    <Compile Include="External\CRC32\CRC32.cs" />
+    <Compile Include="External\Zstandard\ArraySegmentPtr.cs" />
+    <Compile Include="External\Zstandard\CompressionOptions.cs" />
+    <Compile Include="External\Zstandard\Compressor.cs" />
+    <Compile Include="External\Zstandard\DecompressionOptions.cs" />
+    <Compile Include="External\Zstandard\Decompressor.cs" />
+    <Compile Include="External\Zstandard\DictBuilder.cs" />
+    <Compile Include="External\Zstandard\ExternMethods.cs" />
+    <Compile Include="External\Zstandard\Parameters.cs" />
+    <Compile Include="External\Zstandard\ThrowHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Writers\ArcXWriter.cs" />
@@ -65,6 +75,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libzstd32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libzstd64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
