@@ -50,5 +50,68 @@ namespace ARCX.Core.Tests.Writers
 				container.Files.First().GetStream();
 			}
 		}
+
+		[TestMethod]
+		public void WriteMultipleChunkTest()
+		{
+			var writer = new ArcXWriter(new ArcXWriterSettings
+			{
+				TargetChunkSize = 512
+			});
+			
+			writer.AddFile(new ArcXWriterFile("dir/testfilename", () => new MemoryStream(TestData)));
+			writer.AddFile(new ArcXWriterFile("dir/testfilename2", () => new MemoryStream(TestData)));
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				writer.Write(ms, true);
+
+				ms.Position = 0;
+
+				ArcXContainer container = new ArcXContainer(ms);
+
+				Assert.AreEqual(2, container.Chunks.Count());
+			}
+
+			
+			writer = new ArcXWriter(new ArcXWriterSettings
+			{
+				TargetChunkSize = 1024
+			});
+			
+			writer.AddFile(new ArcXWriterFile("dir/testfilename", () => new MemoryStream(TestData)));
+			writer.AddFile(new ArcXWriterFile("dir/testfilename2", () => new MemoryStream(TestData)));
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				writer.Write(ms, true);
+
+				ms.Position = 0;
+
+				ArcXContainer container = new ArcXContainer(ms);
+
+				Assert.AreEqual(1, container.Chunks.Count());
+			}
+
+			
+			writer = new ArcXWriter(new ArcXWriterSettings
+			{
+				ChunkingEnabled = false
+			});
+			
+			writer.AddFile(new ArcXWriterFile("dir/testfilename", () => new MemoryStream(TestData)));
+			writer.AddFile(new ArcXWriterFile("dir/testfilename2", () => new MemoryStream(TestData)));
+
+			using (MemoryStream ms = new MemoryStream())
+			{
+				writer.Write(ms, true);
+
+				ms.Position = 0;
+
+				ArcXContainer container = new ArcXContainer(ms);
+
+				Assert.AreEqual(2, container.Chunks.Count());
+			}
+		}
 	}
 }

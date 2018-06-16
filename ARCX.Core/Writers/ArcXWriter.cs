@@ -108,32 +108,54 @@ namespace ARCX.Core.Writers
 		{
 			List<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>> chunks = new List<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>>();
 			int currentID = 0;
+			
+			ArcXWriterChunk currentChunk;
+			List<ArcXWriterFile> currentFiles;
+
+			void Reset()
+			{
+				currentChunk = new ArcXWriterChunk
+				{
+					ID = currentID++,
+					CompressionType = Settings.CompressionType,
+					CompressionFlags = Settings.CompressionFlags,
+				};
+
+				currentFiles = new List<ArcXWriterFile>();
+			}
+
+			Reset();
 
 			foreach (var file in Files)
 			{
 				if (Settings.ChunkingEnabled)
 				{
-					throw new NotImplementedException("Chunking has not been implemented yet.");
+					if (currentChunk.UncompressedLength + file.Size > Settings.TargetChunkSize && currentFiles.Any())
+					{
+						chunks.Add(new KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>(currentChunk, currentFiles));
+						Reset();
+					}
+
+					file.Offset = currentChunk.UncompressedLength;
+					currentChunk.UncompressedLength += file.Size;
+
+					currentFiles.Add(file);
 				}
 				else
 				{
 					file.Offset = 0;
-					file.Size = (ulong)file.Length;
+					currentChunk.UncompressedLength = file.Size;
 
-					chunks.Add(new KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>(
-						new ArcXWriterChunk
-						{
-							ID = currentID++,
-							CompressionType = Settings.CompressionType,
-							CompressionFlags = Settings.CompressionFlags,
-							UncompressedLength = (ulong)file.Length,
-						},
-						new List<ArcXWriterFile>
-						{
-							file
-						}));
+					currentFiles.Add(file);
+
+					chunks.Add(new KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>(currentChunk, currentFiles));
+
+					Reset();
 				}
 			}
+
+			if (currentFiles.Any())
+				chunks.Add(new KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>(currentChunk, currentFiles));
 
 			return chunks;
 		}

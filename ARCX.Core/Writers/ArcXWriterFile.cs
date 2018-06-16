@@ -14,13 +14,10 @@ namespace ARCX.Core.Writers
 
 		internal ulong Offset { get; set; }
 
-		internal ulong Size { get; set; }
-
+		public ulong Size { get; protected set; }
 
 
 		public Func<Stream> StreamFunc { get; set; }
-
-		public long Length { get; protected set; }
 
 
 
@@ -30,7 +27,7 @@ namespace ARCX.Core.Writers
 			StreamFunc = streamFunc;
 
 			using (Stream stream = streamFunc())
-				Length = stream.Length;
+				Size = (ulong)stream.Length;
 		}
 
 		public Stream GetStream()

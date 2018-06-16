@@ -10,7 +10,7 @@ namespace ARCX.Core.Writers
 
 		public int Threads { get; set; } = 1;
 
-		public bool ChunkingEnabled { get; set; } = false;
+		public bool ChunkingEnabled { get; set; } = true;
 
 		public uint TargetChunkSize { get; set; } = 16777216;
 
