@@ -104,8 +104,18 @@ namespace ARCX.Core.Writers
 				writer.Close();
 		}
 
+		protected void PreprocessFiles()
+		{
+			Files = Files
+				.OrderBy(x => Path.GetExtension(x.Filename))
+				.ThenBy(x => x.Size)
+				.ToList();
+		}
+
 		protected IList<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>> GenerateChunks()
 		{
+			PreprocessFiles();
+
 			List<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>> chunks = new List<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>>();
 			int currentID = 0;
 			
