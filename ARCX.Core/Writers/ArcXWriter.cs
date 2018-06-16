@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using ARCX.Core.Archive;
 using ARCX.Core.Compressors;
+using ARCX.Core.External;
 
 namespace ARCX.Core.Writers
 {
@@ -51,8 +52,6 @@ namespace ARCX.Core.Writers
 
 			foreach (var chunk in generatedChunks)
 			{
-				//TODO: implement CRC32 here
-
 				long currentStreamOffset = stream.Position;
 
 				using (MemoryStream mem = new MemoryStream())
@@ -72,6 +71,9 @@ namespace ARCX.Core.Writers
 
 				chunk.Key.Offset = (ulong)currentStreamOffset;
 				chunk.Key.CompressedLength = (ulong)(stream.Position - currentStreamOffset);
+
+				stream.Position = currentStreamOffset;
+				chunk.Key.Crc32 = CRC32.Calculate(stream);
 			}
 
 			long headerOffset = stream.Position;
