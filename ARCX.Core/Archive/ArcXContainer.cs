@@ -12,7 +12,7 @@ namespace ARCX.Core.Archive
 
 		public ulong HeaderOffset { get; protected set; }
 
-		public IEnumerable<ArcXChunk> Chunks;
+		public IEnumerable<ArcXChunk> Chunks { get; protected set; }
 
 		public IEnumerable<ArcXFile> Files { get; protected set; }
 
@@ -50,6 +50,8 @@ namespace ARCX.Core.Archive
 
 			for (ulong i = 0; i < chunkCount; i++)
 				chunks.Add(new ArcXChunk(stream, false));
+
+			Chunks = chunks;
 
 			if (closeStream)
 				reader.Close();
