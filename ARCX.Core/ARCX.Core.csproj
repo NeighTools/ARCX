@@ -38,11 +38,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archive\ArcXChunk.cs" />
     <Compile Include="Archive\ArcXContainer.cs" />
     <Compile Include="Archive\ArcXFile.cs" />
+    <Compile Include="Archive\CompressionFlags.cs" />
+    <Compile Include="Archive\CompressionType.cs" />
     <Compile Include="Archive\ContentType.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="Compressors\BaseCompressor.cs" />
+    <Compile Include="Compressors\ICompressor.cs" />
+    <Compile Include="Compressors\IDecompressor.cs" />
+    <Compile Include="Compressors\PassthroughCompressor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
