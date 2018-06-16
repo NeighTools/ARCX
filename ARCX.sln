@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARCX.Core", "ARCX.Core\ARCX
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARCX.Core.Tests", "ARCX.Core.Tests\ARCX.Core.Tests.csproj", "{2ECC1286-3C45-46DE-ABD0-634035416128}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARCX-CLI", "ARCX-CLI\ARCX-CLI.csproj", "{B0ACF086-E856-4C96-BCBB-9AF964B0602F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2ECC1286-3C45-46DE-ABD0-634035416128}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2ECC1286-3C45-46DE-ABD0-634035416128}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2ECC1286-3C45-46DE-ABD0-634035416128}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0ACF086-E856-4C96-BCBB-9AF964B0602F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0ACF086-E856-4C96-BCBB-9AF964B0602F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0ACF086-E856-4C96-BCBB-9AF964B0602F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0ACF086-E856-4C96-BCBB-9AF964B0602F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
