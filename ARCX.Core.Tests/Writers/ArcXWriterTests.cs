@@ -9,12 +9,14 @@ namespace ARCX.Core.Tests.Writers
 	[TestClass]
 	public class ArcXWriterTests
 	{
+		public byte[] TestData = Encoding.ASCII.GetBytes("testdata".PadRight(512, 'X'));
+
 		[TestMethod]
 		public void WriteTest()
 		{
 			var writer = new ArcXWriter();
 
-			writer.AddFile(new ArcXWriterFile("dir/testfilename", () => new MemoryStream(Encoding.ASCII.GetBytes("testdata"))));
+			writer.AddFile(new ArcXWriterFile("dir/testfilename", () => new MemoryStream(TestData)));
 
 			using (MemoryStream ms = new MemoryStream())
 			{
