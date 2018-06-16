@@ -5,12 +5,12 @@ namespace ARCX.Core.Compressors
 {
 	public static class CompressorFactory
 	{
-		public static ICompressor GetCompressor(CompressionType type, Stream source)
+		public static ICompressor GetCompressor(CompressionType type, Stream source, int compressionLevel = 1)
 		{
 			switch (type)
 			{
 				case CompressionType.LZ4:
-					return new LZ4Compressor(source);
+					return new LZ4Compressor(source, compressionLevel);
 				case CompressionType.Uncompressed:
 				default:
 					return new PassthroughCompressor(source);

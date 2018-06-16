@@ -63,7 +63,7 @@ namespace ARCX.Core.Writers
 					mem.Position = 0;
 
 
-					using (ICompressor compressor = CompressorFactory.GetCompressor(Settings.CompressionType, mem))
+					using (ICompressor compressor = CompressorFactory.GetCompressor(Settings.CompressionType, mem, Settings.CompressionLevel))
 					{
 						compressor.WriteTo(stream);
 					}

@@ -6,7 +6,7 @@ namespace ARCX.Core.Compressors
 {
 	public class LZ4Compressor : BaseCompressor
 	{
-		public LZ4Compressor(Stream stream) : base(stream)
+		public LZ4Compressor(Stream stream, int level) : base(stream, level)
 		{
 
 		}
@@ -14,7 +14,11 @@ namespace ARCX.Core.Compressors
 		public override Stream GetStream()
 		{
 			MemoryStream mem = new MemoryStream();
-			using (var lz4 = new LZ4Stream(mem, CompressionMode.Compress, LZ4StreamFlags.IsolateInnerStream))
+
+			LZ4StreamFlags flags = LZ4StreamFlags.IsolateInnerStream |
+			                       (CompressionLevel > 1 ? LZ4StreamFlags.HighCompression : LZ4StreamFlags.None);
+
+			using (var lz4 = new LZ4Stream(mem, CompressionMode.Compress, flags, 4194304))
 			{
 				BaseStream.CopyTo(lz4);
 			}

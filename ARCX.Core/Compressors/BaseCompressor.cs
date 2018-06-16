@@ -6,9 +6,12 @@ namespace ARCX.Core.Compressors
 	{
 		public Stream BaseStream { get; protected set; }
 
-		protected BaseCompressor(Stream uncompressedStream)
+		public int CompressionLevel { get; protected set; }
+
+		protected BaseCompressor(Stream uncompressedStream, int compressionLevel)
 		{
 			BaseStream = uncompressedStream;
+			CompressionLevel = compressionLevel;
 		}
 
 		public virtual void Dispose()

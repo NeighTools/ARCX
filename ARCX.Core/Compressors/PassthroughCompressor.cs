@@ -4,7 +4,7 @@ namespace ARCX.Core.Compressors
 {
 	public class PassthroughCompressor : BaseCompressor, IDecompressor
 	{
-		public PassthroughCompressor(Stream stream) : base(stream)
+		public PassthroughCompressor(Stream stream) : base(stream, 0)
 		{
 
 		}

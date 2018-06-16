@@ -8,6 +8,8 @@ namespace ARCX.Core.Writers
 
 		public CompressionFlags CompressionFlags { get; set; } = CompressionFlags.None;
 
+		public int CompressionLevel { get; set; } = 1;
+
 		public int Threads { get; set; } = 1;
 
 		public bool ChunkingEnabled { get; set; } = true;
