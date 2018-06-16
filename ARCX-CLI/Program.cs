@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ARCX.Core.Archive;
 using ARCX.Core.Writers;
 
 namespace ARCX_CLI
@@ -13,12 +10,20 @@ namespace ARCX_CLI
 	{
 		static void Main(string[] args)
 		{
-			Compress(args);
+			args[0] = args[0].ToLowerInvariant();
+
+			if (args[0].Contains('c'))
+			{
+				Compress(args);
+			}
 		}
 
 		static void Compress(string[] args)
 		{
-			ArcXWriter writer = new ArcXWriter();
+			ArcXWriter writer = new ArcXWriter(new ArcXWriterSettings
+			{
+				CompressionLevel = args[0].Contains('h') ? 10 : 0
+			});
 
 			List<Tuple<string, string>> filesList = new List<Tuple<string, string>>();
 
