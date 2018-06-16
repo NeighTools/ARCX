@@ -5,10 +5,8 @@ namespace ARCX.Core.Compressors
 {
 	public interface ICompressor : IDisposable
 	{
-		Stream BaseStream { get; }
+		void WriteTo(Stream source, Stream destination);
 
-		void WriteTo(Stream stream);
-
-		Stream GetStream();
+		Stream GetStream(Stream source);
 	}
 }

@@ -44,34 +44,36 @@ namespace ARCX_CLI
 
 		static void Compress(Dictionary<string, string> arguments, List<string> additionalArgs)
 		{
-			CompressionType type = ArcXWriterSettings.DefaultSettings.CompressionType;
+			ArcXWriterSettings settings = new ArcXWriterSettings();
 
 			if (arguments.ContainsKey("c:type"))
 				switch (arguments["c:type"].ToLowerInvariant())
 				{
 					case "lz4":
-						type = CompressionType.LZ4;
+						settings.CompressionType = CompressionType.LZ4;
 						break;
 					case "zstd":
 					default:
-						type = CompressionType.Zstd;
+						settings.CompressionType = CompressionType.Zstd;
 						break;
 					case "brotli":
-						type = CompressionType.Brotli;
+						settings.CompressionType = CompressionType.Brotli;
 						break;
 					case "lzham":
-						type = CompressionType.LZHAM;
+						settings.CompressionType = CompressionType.LZHAM;
 						break;
 					case "lzma":
-						type = CompressionType.LZMA;
+						settings.CompressionType = CompressionType.LZMA;
 						break;
 				}
 
-			ArcXWriter writer = new ArcXWriter(new ArcXWriterSettings
-			{
-				CompressionLevel = arguments.ContainsKey("c:level") ? int.Parse(arguments["c:level"]) : 0,
-				CompressionType = type,
-			});
+			if (arguments.ContainsKey("c:level"))
+				settings.CompressionLevel = int.Parse(arguments["c:level"]);
+
+			if (arguments.ContainsKey("c:threads"))
+				settings.Threads = int.Parse(arguments["c:threads"]);
+
+			ArcXWriter writer = new ArcXWriter(settings);
 
 			List<Tuple<string, string>> filesList = new List<Tuple<string, string>>();
 

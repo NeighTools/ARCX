@@ -6,36 +6,51 @@ namespace ARCX.Core.Compressors
 	{
 		protected ZstdNet.Compressor BaseCompressor;
 
-		public ZstdCompressor(Stream stream, int level) : base(stream, level)
+		public ZstdCompressor(int compressionLevel) : base(compressionLevel)
 		{
 			BaseCompressor = new ZstdNet.Compressor(new ZstdNet.CompressionOptions(CompressionLevel));
 		}
 
-		public override Stream GetStream()
+		public override Stream GetStream(Stream source)
 		{
-			return new MemoryStream(BaseCompressor.Wrap(BaseStream.ToBytes()));
+			return new MemoryStream(BaseCompressor.Wrap(source.ToBytes()));
 		}
 
-		public override void WriteTo(Stream destination)
+		public override void WriteTo(Stream source, Stream destination)
 		{
-			byte[] compBytes = BaseCompressor.Wrap(BaseStream.ToBytes());
+			byte[] compBytes = BaseCompressor.Wrap(source.ToBytes());
 
 			destination.Write(compBytes, 0, compBytes.Length);
+		}
+
+		public override void Dispose()
+		{
+			BaseCompressor.Dispose();
+		}
+
+		~ZstdCompressor()
+		{
+			Dispose();
 		}
 	}
 
 	public class ZstdDecompressor : BaseDecompressor
 	{
-		protected ZstdNet.Decompressor BaseDecompressor;
+		protected ZstdNet.Decompressor BaseDecompressor = new ZstdNet.Decompressor();
 
-		public ZstdDecompressor(Stream stream) : base(stream)
+		public override Stream GetStream(Stream source)
 		{
-			BaseDecompressor = new ZstdNet.Decompressor();
+			return new MemoryStream(BaseDecompressor.Unwrap(source.ToBytes()));
 		}
 
-		public override Stream GetStream()
+		public override void Dispose()
 		{
-			return new MemoryStream(BaseDecompressor.Unwrap(BaseStream.ToBytes()));
+			BaseDecompressor.Dispose();
+		}
+
+		~ZstdDecompressor()
+		{
+			Dispose();
 		}
 	}
 }

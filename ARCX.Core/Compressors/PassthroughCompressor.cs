@@ -4,14 +4,14 @@ namespace ARCX.Core.Compressors
 {
 	public class PassthroughCompressor : BaseCompressor, IDecompressor
 	{
-		public PassthroughCompressor(Stream stream) : base(stream, 0)
+		public PassthroughCompressor() : base(0)
 		{
 
 		}
 
-		public override Stream GetStream()
+		public override Stream GetStream(Stream source)
 		{
-			return BaseStream;
+			return source;
 		}
 	}
 }

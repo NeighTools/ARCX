@@ -54,7 +54,7 @@ namespace ARCX.Core.Archive
 
 		public Stream GetStream()
 		{
-			return CompressorFactory.GetDecompressor(CompressionType, GetRawStream()).GetStream();
+			return CompressorFactory.GetDecompressor(CompressionType).GetStream(GetRawStream());
 		}
 	}
 }

@@ -49,14 +49,15 @@
     <Compile Include="Archive\CompressionFlags.cs" />
     <Compile Include="Archive\CompressionType.cs" />
     <Compile Include="Archive\ContentType.cs" />
-    <Compile Include="Compressors\BaseCompressor.cs" />
     <Compile Include="Compressors\BaseDecompressor.cs" />
+    <Compile Include="Compressors\BaseCompressor.cs" />
     <Compile Include="Compressors\CompressorFactory.cs" />
     <Compile Include="Compressors\ICompressor.cs" />
     <Compile Include="Compressors\IDecompressor.cs" />
     <Compile Include="Compressors\ZstdCompressor.cs" />
     <Compile Include="Compressors\LZ4Compressor.cs" />
     <Compile Include="Compressors\PassthroughCompressor.cs" />
+    <Compile Include="ConcurrentQueue.cs" />
     <Compile Include="External\CRC32\CRC32.cs" />
     <Compile Include="External\Zstandard\ArraySegmentPtr.cs" />
     <Compile Include="External\Zstandard\CompressionOptions.cs" />
@@ -67,12 +68,12 @@
     <Compile Include="External\Zstandard\ExternMethods.cs" />
     <Compile Include="External\Zstandard\Parameters.cs" />
     <Compile Include="External\Zstandard\ThrowHelper.cs" />
-    <Compile Include="MemoryStreamEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Writers\ArcXWriter.cs" />
     <Compile Include="Writers\ArcXWriterFile.cs" />
     <Compile Include="Writers\ArcXWriterSettings.cs" />
+    <Compile Include="Writers\WriterThreadContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

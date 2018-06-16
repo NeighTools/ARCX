@@ -5,8 +5,6 @@ namespace ARCX.Core.Compressors
 {
 	public interface IDecompressor : IDisposable
 	{
-		Stream BaseStream { get; }
-
-		Stream GetStream();
+		Stream GetStream(Stream source);
 	}
 }

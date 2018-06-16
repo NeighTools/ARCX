@@ -4,26 +4,23 @@ namespace ARCX.Core.Compressors
 {
 	public abstract class BaseCompressor : ICompressor
 	{
-		public Stream BaseStream { get; protected set; }
-
 		public int CompressionLevel { get; protected set; }
 
-		protected BaseCompressor(Stream uncompressedStream, int compressionLevel)
+		protected BaseCompressor(int compressionLevel)
 		{
-			BaseStream = uncompressedStream;
 			CompressionLevel = compressionLevel;
 		}
 
 		public virtual void Dispose()
 		{
-			BaseStream.Dispose();
+
 		}
 
-		public abstract Stream GetStream();
+		public abstract Stream GetStream(Stream source);
 
-		public virtual void WriteTo(Stream destination)
+		public virtual void WriteTo(Stream source, Stream destination)
 		{
-			using (Stream stream = GetStream())
+			using (Stream stream = GetStream(source))
 				stream.CopyTo(destination);
 		}
 	}

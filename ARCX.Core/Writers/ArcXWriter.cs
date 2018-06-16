@@ -28,6 +28,89 @@ namespace ARCX.Core.Writers
 			Files.Add(file);
 		}
 
+		#region Threading
+		
+		internal WriterThreadContext[] ThreadContexts;
+
+		protected Thread[] Threads;
+
+		protected ConcurrentQueue<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>> QueuedChunks;
+
+		public void CompressCallback(object threadContext)
+		{
+			var context = (WriterThreadContext)threadContext;
+
+			while (QueuedChunks.Count > 0)
+			{
+				bool result = QueuedChunks.TryDequeue(out var chunk, 250);
+
+				if (!result) 
+					continue;
+
+				long currentStreamOffset = context.ArchiveStream.Position;
+
+				using (MemoryStream mem = new MemoryStream())
+				{
+					foreach (var file in chunk.Value)
+						using (Stream fileStream = file.GetStream())
+							fileStream.CopyTo(mem);
+
+					mem.Position = 0;
+
+					using (Stream compressedBuffer = context.Compressor.GetStream(mem))
+					{
+						lock (context.ArchiveStream)
+						{
+							compressedBuffer.CopyTo(context.ArchiveStream);
+
+							chunk.Key.Offset = (ulong)currentStreamOffset;
+							chunk.Key.CompressedLength = (ulong)(context.ArchiveStream.Position - currentStreamOffset);
+
+							context.ArchiveStream.Position = currentStreamOffset;
+							chunk.Key.Crc32 = CRC32.Calculate(context.ArchiveStream);
+						}
+					}
+				}
+
+				//Aggressive GC collections
+				GC.Collect();
+			}
+		}
+
+		protected void InitializeThreads(int threads, IEnumerable<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>> chunks, Stream fileStream, CompressionType compressionType, int compressionLevel)
+		{
+			QueuedChunks = new ConcurrentQueue<KeyValuePair<ArcXWriterChunk, IList<ArcXWriterFile>>>(chunks);
+			
+			Threads = new Thread[threads];
+			ThreadContexts = new WriterThreadContext[threads];
+
+			for (int i = 0; i < threads; i++)
+			{
+				Threads[i] = new Thread(CompressCallback);
+
+				var ctx = new WriterThreadContext(fileStream, CompressorFactory.GetCompressor(compressionType, compressionLevel));
+				
+				ThreadContexts[i] = ctx;
+				Threads[i].Start(ctx);
+			}
+		}
+
+		protected void FinalizeThreads()
+		{
+			foreach (WriterThreadContext ctx in ThreadContexts)
+			{
+				ctx.Compressor.Dispose();
+			}
+		}
+
+		protected void WaitForThreadCompletion()
+		{
+			foreach (Thread thread in Threads)
+				thread.Join();
+		}
+
+		#endregion
+
 		public void Write(Stream stream, bool keepStreamOpen = false)
 		{
 			if (!stream.CanSeek)
@@ -47,34 +130,12 @@ namespace ARCX.Core.Writers
 
 			var generatedChunks = GenerateChunks();
 
-			if (Settings.Threads > 1)
-				throw new NotImplementedException("Multithreading is currently not implemented.");
+			//do work
+			InitializeThreads(Settings.Threads, generatedChunks, stream, Settings.CompressionType, Settings.CompressionLevel);
+			
+			WaitForThreadCompletion();
 
-			foreach (var chunk in generatedChunks)
-			{
-				long currentStreamOffset = stream.Position;
-
-				using (MemoryStream mem = new MemoryStream())
-				{
-					foreach (var file in chunk.Value)
-						using (Stream fileStream = file.GetStream())
-							fileStream.CopyTo(mem);
-
-					mem.Position = 0;
-
-
-					using (ICompressor compressor = CompressorFactory.GetCompressor(Settings.CompressionType, mem, Settings.CompressionLevel))
-					{
-						compressor.WriteTo(stream);
-					}
-				}
-
-				chunk.Key.Offset = (ulong)currentStreamOffset;
-				chunk.Key.CompressedLength = (ulong)(stream.Position - currentStreamOffset);
-
-				stream.Position = currentStreamOffset;
-				chunk.Key.Crc32 = CRC32.Calculate(stream);
-			}
+			FinalizeThreads();
 
 			long headerOffset = stream.Position;
 

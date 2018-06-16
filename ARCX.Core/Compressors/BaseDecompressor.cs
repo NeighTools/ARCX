@@ -4,18 +4,16 @@ namespace ARCX.Core.Compressors
 {
 	public abstract class BaseDecompressor : IDecompressor
 	{
-		public Stream BaseStream { get; protected set; }
-
-		protected BaseDecompressor(Stream uncompressedStream)
+		protected BaseDecompressor()
 		{
-			BaseStream = uncompressedStream;
+			
 		}
 
 		public virtual void Dispose()
 		{
-			BaseStream.Dispose();
+
 		}
 
-		public abstract Stream GetStream();
+		public abstract Stream GetStream(Stream source);
 	}
 }
