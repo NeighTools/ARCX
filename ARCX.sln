@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARCX.Core.Tests", "ARCX.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARCX-CLI", "ARCX-CLI\ARCX-CLI.csproj", "{B0ACF086-E856-4C96-BCBB-9AF964B0602F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARCX.FileSystemLoader", "ARCX.FileSystemLoader\ARCX.FileSystemLoader.csproj", "{E256D0AF-D2CE-488B-A74A-3556C582D220}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ARCX.FileSystem.Patcher", "ARCX.FileSystem.Patcher\ARCX.FileSystem.Patcher.csproj", "{67D61E08-4239-435C-9783-09E7FC8D665A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{B0ACF086-E856-4C96-BCBB-9AF964B0602F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0ACF086-E856-4C96-BCBB-9AF964B0602F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0ACF086-E856-4C96-BCBB-9AF964B0602F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E256D0AF-D2CE-488B-A74A-3556C582D220}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E256D0AF-D2CE-488B-A74A-3556C582D220}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E256D0AF-D2CE-488B-A74A-3556C582D220}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E256D0AF-D2CE-488B-A74A-3556C582D220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D61E08-4239-435C-9783-09E7FC8D665A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D61E08-4239-435C-9783-09E7FC8D665A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D61E08-4239-435C-9783-09E7FC8D665A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D61E08-4239-435C-9783-09E7FC8D665A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
