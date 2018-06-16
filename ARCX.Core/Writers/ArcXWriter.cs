@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using ARCX.Core.Archive;
 using ARCX.Core.Compressors;
 using ARCX.Core.External;
