@@ -9,6 +9,8 @@ namespace ARCX.Core.Compressors
 		{
 			switch (type)
 			{
+				case CompressionType.LZ4:
+					return new LZ4Compressor(source);
 				case CompressionType.Uncompressed:
 				default:
 					return new PassthroughCompressor(source);
@@ -19,6 +21,8 @@ namespace ARCX.Core.Compressors
 		{
 			switch (type)
 			{
+				case CompressionType.LZ4:
+					return new LZ4Decompressor(source);
 				case CompressionType.Uncompressed:
 				default:
 					return new PassthroughCompressor(source);

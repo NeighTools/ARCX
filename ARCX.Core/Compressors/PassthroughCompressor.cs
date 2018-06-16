@@ -13,10 +13,5 @@ namespace ARCX.Core.Compressors
 		{
 			return BaseStream;
 		}
-
-		public override void WriteTo(Stream stream)
-		{
-			BaseStream.CopyTo(stream);
-		}
 	}
 }

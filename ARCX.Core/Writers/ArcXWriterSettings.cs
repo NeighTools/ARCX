@@ -4,7 +4,7 @@ namespace ARCX.Core.Writers
 {
 	public class ArcXWriterSettings
 	{
-		public CompressionType CompressionType { get; set; } = CompressionType.Uncompressed;
+		public CompressionType CompressionType { get; set; } = CompressionType.LZ4;
 
 		public CompressionFlags CompressionFlags { get; set; } = CompressionFlags.None;
 

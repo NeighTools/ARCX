@@ -18,6 +18,10 @@ namespace ARCX.Core.Compressors
 
 		public abstract Stream GetStream();
 
-		public abstract void WriteTo(Stream stream);
+		public virtual void WriteTo(Stream destination)
+		{
+			using (Stream stream = GetStream())
+				stream.CopyTo(destination);
+		}
 	}
 }
