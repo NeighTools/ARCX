@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Text;
+using ARCX.Core.Compressors;
 
 namespace ARCX.Core.Archive
 {
@@ -19,9 +19,15 @@ namespace ARCX.Core.Archive
 
 		public ulong UncompressedLength { get; protected set; }
 
-		internal ArcXChunk(Stream stream, bool closeStream = true)
+
+		protected Stream BaseStream { get; set; }
+
+		protected ArcXContainer Container { get; set; }
+
+
+		internal ArcXChunk(Stream stream, ArcXContainer container)
 		{
-			BinaryReader reader = new BinaryReader(stream, Encoding.Unicode);
+			BinaryReader reader = new BinaryReader(stream);
 
 			ID = reader.ReadInt32();
 			CompressionType = (CompressionType)reader.ReadByte();
@@ -31,8 +37,24 @@ namespace ARCX.Core.Archive
 			CompressedLength = reader.ReadUInt64();
 			UncompressedLength = reader.ReadUInt64();
 
-			if (closeStream)
-				reader.Close();
+			BaseStream = stream;
+			Container = container;
+		}
+
+		public Stream GetRawStream()
+		{
+			BaseStream.Position = (long)Offset;
+
+			byte[] buffer = new byte[CompressedLength];
+
+			BaseStream.Read(buffer, 0, (int)CompressedLength);
+
+			return new MemoryStream(buffer);
+		}
+
+		public Stream GetStream()
+		{
+			return CompressorFactory.GetDecompressor(CompressionType, GetRawStream()).GetStream();
 		}
 	}
 }

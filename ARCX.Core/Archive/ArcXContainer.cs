@@ -18,7 +18,7 @@ namespace ARCX.Core.Archive
 
 		public uint TargetChunkSize { get; protected set; }
 
-		public ArcXContainer(Stream stream, bool closeStream = true)
+		public ArcXContainer(Stream stream)
 		{
 			BinaryReader reader = new BinaryReader(stream, Encoding.Unicode);
 
@@ -39,7 +39,7 @@ namespace ARCX.Core.Archive
 			List<ArcXFile> files = new List<ArcXFile>((int)fileCount);
 
 			for (ulong i = 0; i < fileCount; i++)
-				files.Add(new ArcXFile(stream, false));
+				files.Add(new ArcXFile(stream, this));
 
 			Files = files;
 
@@ -49,12 +49,9 @@ namespace ARCX.Core.Archive
 			List<ArcXChunk> chunks = new List<ArcXChunk>((int)chunkCount);
 
 			for (ulong i = 0; i < chunkCount; i++)
-				chunks.Add(new ArcXChunk(stream, false));
+				chunks.Add(new ArcXChunk(stream, this));
 
 			Chunks = chunks;
-
-			if (closeStream)
-				reader.Close();
 		}
 	}
 }

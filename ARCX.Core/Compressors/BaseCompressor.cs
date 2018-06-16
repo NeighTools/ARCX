@@ -4,7 +4,7 @@ namespace ARCX.Core.Compressors
 {
 	public abstract class BaseCompressor : ICompressor
 	{
-		public Stream BaseStream {get; protected set; }
+		public Stream BaseStream { get; protected set; }
 
 		protected BaseCompressor(Stream uncompressedStream)
 		{

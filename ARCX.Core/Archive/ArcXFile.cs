@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace ARCX.Core.Archive
@@ -15,7 +16,15 @@ namespace ARCX.Core.Archive
 
 		public ulong Offset { get; protected set; }
 
-		internal ArcXFile(Stream stream, bool closeStream = true)
+
+		protected Stream BaseStream { get; set; }
+
+		public ArcXContainer Container { get; set; }
+
+		public ArcXChunk Chunk => Container.Chunks.FirstOrDefault(x => x.ID == ChunkID);
+
+
+		internal ArcXFile(Stream stream, ArcXContainer container)
 		{
 			BinaryReader reader = new BinaryReader(stream, Encoding.Unicode);
 
@@ -25,8 +34,20 @@ namespace ARCX.Core.Archive
 			Offset = reader.ReadUInt64();
 			Size = reader.ReadUInt64();
 
-			if (closeStream)
-				reader.Close();
+			BaseStream = stream;
+			Container = container;
+		}
+
+		public Stream GetStream()
+		{
+			byte[] buffer = new byte[Size];
+
+			using (Stream stream = Chunk.GetStream())
+			{
+				stream.Read(buffer, (int)Offset, (int)Size);
+			}
+
+			return new MemoryStream(buffer);
 		}
 	}
 }
