@@ -45,11 +45,16 @@
     <Compile Include="Archive\CompressionType.cs" />
     <Compile Include="Archive\ContentType.cs" />
     <Compile Include="Compressors\BaseCompressor.cs" />
+    <Compile Include="Compressors\BaseDecompressor.cs" />
+    <Compile Include="Compressors\CompressorFactory.cs" />
     <Compile Include="Compressors\ICompressor.cs" />
     <Compile Include="Compressors\IDecompressor.cs" />
     <Compile Include="Compressors\PassthroughCompressor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Writers\ArcXWriter.cs" />
+    <Compile Include="Writers\ArcXWriterFile.cs" />
+    <Compile Include="Writers\ArcXWriterSettings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

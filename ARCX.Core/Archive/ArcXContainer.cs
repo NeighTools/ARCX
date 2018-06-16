@@ -6,9 +6,9 @@ namespace ARCX.Core.Archive
 {
 	public class ArcXContainer
 	{
-		public string Magic { get; } = "ARCX";
+		public static string Magic { get; } = "ARCX";
 
-		public ushort Version { get; } = 1;
+		public static ushort Version { get; } = 1;
 
 		public ulong HeaderOffset { get; protected set; }
 
@@ -18,7 +18,7 @@ namespace ARCX.Core.Archive
 
 		public uint TargetChunkSize { get; protected set; }
 
-		protected ArcXContainer(Stream stream, bool closeStream = true)
+		public ArcXContainer(Stream stream, bool closeStream = true)
 		{
 			BinaryReader reader = new BinaryReader(stream, Encoding.Unicode);
 
