@@ -13,7 +13,7 @@ namespace ARCX.Core.Compressors
 
 		public override Stream GetStream()
 		{
-			MemoryStream mem = new MemoryStream();
+			MemoryStreamEx mem = new MemoryStreamEx();
 
 			LZ4StreamFlags flags = LZ4StreamFlags.IsolateInnerStream |
 			                       (CompressionLevel > 1 ? LZ4StreamFlags.HighCompression : LZ4StreamFlags.None);
@@ -23,6 +23,7 @@ namespace ARCX.Core.Compressors
 				BaseStream.CopyTo(lz4);
 			}
 
+			mem.TrimBuffer();
 			mem.Position = 0;
 
 			return mem;
