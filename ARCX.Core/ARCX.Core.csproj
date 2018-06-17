@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7B549050-6C58-4C2C-9C5A-D0429E0D2A39}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ARCX.Core</RootNamespace>
+    <AssemblyName>ARCX.Core</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LZ4, Version=1.0.15.93, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\lz4net.1.0.15.93\lib\net2\LZ4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Archive\ArcXChunk.cs" />
+    <Compile Include="Archive\ArcXContainer.cs" />
+    <Compile Include="Archive\ArcXFile.cs" />
+    <Compile Include="Archive\CompressionFlags.cs" />
+    <Compile Include="Archive\CompressionType.cs" />
+    <Compile Include="Archive\ContentType.cs" />
+    <Compile Include="Compressors\BaseDecompressor.cs" />
+    <Compile Include="Compressors\BaseCompressor.cs" />
+    <Compile Include="Compressors\CompressorFactory.cs" />
+    <Compile Include="Compressors\ICompressor.cs" />
+    <Compile Include="Compressors\IDecompressor.cs" />
+    <Compile Include="Compressors\ZstdCompressor.cs" />
+    <Compile Include="Compressors\LZ4Compressor.cs" />
+    <Compile Include="Compressors\PassthroughCompressor.cs" />
+    <Compile Include="ConcurrentQueue.cs" />
+    <Compile Include="External\CRC32\CRC32.cs" />
+    <Compile Include="External\Zstandard\ArraySegmentPtr.cs" />
+    <Compile Include="External\Zstandard\CompressionOptions.cs" />
+    <Compile Include="External\Zstandard\Compressor.cs" />
+    <Compile Include="External\Zstandard\DecompressionOptions.cs" />
+    <Compile Include="External\Zstandard\Decompressor.cs" />
+    <Compile Include="External\Zstandard\DictBuilder.cs" />
+    <Compile Include="External\Zstandard\ExternMethods.cs" />
+    <Compile Include="External\Zstandard\Parameters.cs" />
+    <Compile Include="External\Zstandard\ThrowHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="Writers\ArcXWriter.cs" />
+    <Compile Include="Writers\ArcXWriterFile.cs" />
+    <Compile Include="Writers\ArcXWriterSettings.cs" />
+    <Compile Include="Writers\WriterThreadContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="libzstd32.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="libzstd64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
