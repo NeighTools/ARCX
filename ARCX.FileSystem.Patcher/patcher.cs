@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -7,18 +8,26 @@ namespace ARCX.FileSystem.Patcher
 {
     public static class Patcher
     {
-        private static PatcherFunc CurrentPatcher;
+        private static Action<AssemblyDefinition> CurrentPatcher;
+	    private static AssemblyDefinition FileSystemLoader;
 
-        private static readonly Dictionary<string, PatcherFunc> Patchers = new Dictionary<string, PatcherFunc>
+        private static readonly Dictionary<string, Action<AssemblyDefinition>> Patchers = new Dictionary<string, Action<AssemblyDefinition>>
         {
                 {"Assembly-CSharp-firstpass.dll", PatchFirstPass},
                 {"Assembly-CSharp.dll", PatchAssemblyCSharp}
         };
 
-        private static AssemblyDefinition FileSystemLoader;
-
-
-        public static IEnumerable<string> TargetDLLs => ProcessAssemblies();
+	    public static IEnumerable<string> TargetDLLs
+	    {
+		    get
+		    {
+			    foreach (var job in Patchers)
+			    {
+				    CurrentPatcher = job.Value;
+				    yield return job.Key;
+			    }
+		    }
+	    }
 
         public static void Patch(AssemblyDefinition ass)
         {
@@ -28,15 +37,6 @@ namespace ARCX.FileSystem.Patcher
         public static void Initialize()
         {
             FileSystemLoader = AssemblyDefinition.ReadAssembly("..\\arcx\\ARCX.FileSystemLoader.dll");
-        }
-
-        private static IEnumerable<string> ProcessAssemblies()
-        {
-            foreach (KeyValuePair<string, PatcherFunc> job in Patchers)
-            {
-                CurrentPatcher = job.Value;
-                yield return job.Key;
-            }
         }
 
         private static void PatchAssemblyCSharp(AssemblyDefinition assCSharp)
@@ -62,7 +62,5 @@ namespace ARCX.FileSystem.Patcher
             foreach (MethodDefinition methodDefinition in fsArchive.Methods.Where(m => !m.IsConstructor && !m.IsVirtual))
                 methodDefinition.IsVirtual = true;
         }
-
-        private delegate void PatcherFunc(AssemblyDefinition ass);
     }
 }
