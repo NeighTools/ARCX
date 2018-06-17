@@ -9,8 +9,16 @@ namespace ARCX_CLI
 {
 	class Program
 	{
+		static void ShowHelp()
+		{
+			throw new NotImplementedException();
+		}
+
 		static void Main(string[] args)
 		{
+			if (args.Length == 0)
+				ShowHelp();
+
 			args[0] = args[0].ToLowerInvariant();
 
 			Dictionary<string, string> arguments = new Dictionary<string, string>();
@@ -34,6 +42,10 @@ namespace ARCX_CLI
 			if (args[0].Contains('c'))
 			{
 				Compress(arguments, additionalArgs);
+			}
+			else
+			{
+				ShowHelp();
 			}
 		}
 
