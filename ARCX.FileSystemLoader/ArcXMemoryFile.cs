@@ -1,47 +1,59 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.IO;
+using ARCX.Core.Archive;
 
 namespace ARCX.FileSystemLoader
 {
     public class ArcXMemoryFile : AFileBase
     {
+        private readonly ArcXFile filePtr;
+        private Stream stream;
+
+        public ArcXMemoryFile(ArcXFile filePtr)
+        {
+            this.filePtr = filePtr;
+        }
+
+        public override IntPtr NativePointerToInterfaceFile { get; } = IntPtr.Zero;
+
+        private Stream FileStream => stream ?? (stream = filePtr.GetStream());
+
         public override bool IsValid()
         {
-            throw new NotImplementedException();
+            return filePtr != null;
         }
 
         public override int Seek(int f_unPos, bool absolute_move)
         {
-            throw new NotImplementedException();
+            return (int) FileStream.Seek(f_unPos, absolute_move ? SeekOrigin.Begin : SeekOrigin.Current);
         }
 
         public override int Read(ref byte[] f_byBuf, int f_nReadSize)
         {
-            throw new NotImplementedException();
+            return FileStream.Read(f_byBuf, 0, f_nReadSize);
         }
 
         public override byte[] ReadAll()
         {
-            throw new NotImplementedException();
+            byte[] result = new byte[filePtr.Size];
+            FileStream.Seek(0, SeekOrigin.Begin);
+            FileStream.Read(result, 0, result.Length);
+            return result;
         }
 
         public override int Tell()
         {
-            throw new NotImplementedException();
+            return (int) FileStream.Position;
         }
 
         public override int GetSize()
         {
-            throw new NotImplementedException();
+            return (int) filePtr.Size;
         }
 
         protected override void Dispose(bool is_release_managed_code)
         {
-            throw new NotImplementedException();
+            stream?.Dispose();
         }
-
-        public override IntPtr NativePointerToInterfaceFile { get; } = IntPtr.Zero;
     }
 }
