@@ -45,6 +45,9 @@ namespace ARCX.Core
 		{
 			lock (internalList)
 			{
+				if (internalList.Count == 0)
+					return default(T);
+
 				return internalList[0];
 			}
 		}
