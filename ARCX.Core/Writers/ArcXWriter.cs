@@ -18,10 +18,7 @@ namespace ARCX.Core.Writers
 
 		public ArcXWriter(ArcXWriterSettings settings = null)
 		{
-			if (settings == null)
-				Settings = ArcXWriterSettings.DefaultSettings;
-			else
-				Settings = settings;
+			Settings = settings ?? ArcXWriterSettings.DefaultSettings;
 		}
 
 		public void AddFile(ArcXWriterFile file)
@@ -48,8 +45,6 @@ namespace ARCX.Core.Writers
 				if (!result) 
 					continue;
 
-				long currentStreamOffset = context.ArchiveStream.Position;
-
 				using (MemoryStream mem = new MemoryStream())
 				{
 					foreach (var file in chunk.Value)
@@ -60,15 +55,15 @@ namespace ARCX.Core.Writers
 
 					using (Stream compressedBuffer = context.Compressor.GetStream(mem))
 					{
+						chunk.Key.Crc32 = CRC32.Calculate(compressedBuffer);
+						chunk.Key.CompressedLength = (ulong)compressedBuffer.Length;
+						compressedBuffer.Position = 0;
+
 						lock (context.ArchiveStream)
 						{
+							chunk.Key.Offset = (ulong)context.ArchiveStream.Position;
+
 							compressedBuffer.CopyTo(context.ArchiveStream);
-
-							chunk.Key.Offset = (ulong)currentStreamOffset;
-							chunk.Key.CompressedLength = (ulong)(context.ArchiveStream.Position - currentStreamOffset);
-
-							context.ArchiveStream.Position = currentStreamOffset;
-							chunk.Key.Crc32 = CRC32.Calculate(context.ArchiveStream);
 						}
 					}
 				}

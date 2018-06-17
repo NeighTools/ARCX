@@ -26,14 +26,9 @@ namespace ARCX_CLI
 					break;
 				}
 
-				string key;
-
-				if (args[i].StartsWith("--"))
-					key = args[i].Substring(2);
-				else
-					key = args[i].Substring(1);
-
-				arguments.Add(key, args[++i]);
+				arguments.Add(
+					args[i].Substring(args[i].StartsWith("--") ? 2 : 1), 
+					args[++i]);
 			}
 
 			if (args[0].Contains('c'))
