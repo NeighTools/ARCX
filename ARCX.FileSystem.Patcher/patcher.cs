@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 
@@ -34,9 +37,11 @@ namespace ARCX.FileSystem.Patcher
             CurrentPatcher?.Invoke(ass);
         }
 
+        private static string CombinePaths(params string[] paths) => paths.Aggregate(Path.Combine);
+
         public static void Initialize()
         {
-            FileSystemLoader = AssemblyDefinition.ReadAssembly("..\\arcx\\ARCX.FileSystemLoader.dll");
+            FileSystemLoader = AssemblyDefinition.ReadAssembly(CombinePaths(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "..", "ARCX.FileSystemLoader.dll"));
         }
 
 	    public static void Finish()
@@ -47,6 +52,7 @@ namespace ARCX.FileSystem.Patcher
         private static void PatchAssemblyCSharp(AssemblyDefinition assCSharp)
         {
             TypeDefinition gameUty = assCSharp.MainModule.GetType("GameUty");
+
             TypeDefinition hooks = FileSystemLoader.MainModule.GetType("ARCX.FileSystemLoader.Hooks");
 
             MethodDefinition initArcX = hooks.Methods.First(m => m.Name == "InitARCX");
