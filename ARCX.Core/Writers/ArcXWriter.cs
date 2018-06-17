@@ -18,10 +18,7 @@ namespace ARCX.Core.Writers
 
 		public ArcXWriter(ArcXWriterSettings settings = null)
 		{
-			if (settings == null)
-				Settings = ArcXWriterSettings.DefaultSettings;
-			else
-				Settings = settings;
+			Settings = settings ?? ArcXWriterSettings.DefaultSettings;
 		}
 
 		public void AddFile(ArcXWriterFile file)
