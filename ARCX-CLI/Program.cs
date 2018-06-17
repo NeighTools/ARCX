@@ -76,7 +76,10 @@ namespace ARCX_CLI
 			{
 				if (File.Exists(arg))
 				{
-					filesList.Add(new Tuple<string, string>(Path.GetFileName(arg), arg));
+					if (ArcReader.Read(arg, out List<ArcXWriterFile> arcFiles))
+						writer.Files.AddRange(arcFiles);
+					else
+						filesList.Add(new Tuple<string, string>(Path.GetFileName(arg), arg));
 				}
 				else if (Directory.Exists(arg))
 				{
