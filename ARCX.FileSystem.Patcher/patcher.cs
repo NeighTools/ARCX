@@ -39,14 +39,19 @@ namespace ARCX.FileSystem.Patcher
             FileSystemLoader = AssemblyDefinition.ReadAssembly("..\\arcx\\ARCX.FileSystemLoader.dll");
         }
 
+	    public static void Finish()
+	    {
+			FileSystemLoader.Dispose();
+	    }
+
         private static void PatchAssemblyCSharp(AssemblyDefinition assCSharp)
         {
             TypeDefinition gameUty = assCSharp.MainModule.GetType("GameUty");
             TypeDefinition hooks = FileSystemLoader.MainModule.GetType("ARCX.FileSystemLoader.Hooks");
 
-            MethodDefinition initArcX = hooks.Methods.FirstOrDefault(m => m.Name == "InitARCX");
+            MethodDefinition initArcX = hooks.Methods.First(m => m.Name == "InitARCX");
 
-            MethodDefinition initMethod = gameUty.Methods.FirstOrDefault(m => m.Name == "Init");
+            MethodDefinition initMethod = gameUty.Methods.First(m => m.Name == "Init");
 
             Instruction ins = initMethod.Body.Instructions[3];
             ILProcessor il = initMethod.Body.GetILProcessor();
