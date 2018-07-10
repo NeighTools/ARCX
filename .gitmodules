@@ -1,0 +1,3 @@
+[submodule "COM3D2.ARCX/lib/minhook"]
+	path = COM3D2.ARCX/lib/minhook
+	url = https://github.com/TsudaKageyu/minhook.git
