@@ -1,6 +1,7 @@
 #include <string>
 #include "ArcXFileSystem.h"
 #include "logging.h"
+#include "CMFilePointer.h"
 
 #define LOG_MSG(msg) *(self->logger) << msg << std::endl;
 
@@ -57,16 +58,29 @@ void *GetFile(FileSystemArchiveNative *fs, char *file_str)
 	auto self = GET_ARCX_THIS(fs, 4);
 	LOG_MSG("FILE: " << file_str);
 
-
 	return self->original_funcs->GetFile(fs, file_str);
 }
 
+namespace fs = std::experimental::filesystem;
 
 void *GetFileWide(FileSystemArchiveNative *fs, wchar_t *path)
 {
 	auto self = GET_ARCX_THIS(fs, 2);
 
 	LOG_MSG("FILE (WIDE): " << narrow(path));
+
+	// TODO: Remove test code
+
+	fs::path p("FS_Proxy");
+	p /= path;
+
+	LOG_MSG("Looking for " << fs::canonical(p));
+
+	if(fs::exists(p))
+	{
+		LOG_MSG("Found proxy file! Returning that!");
+		return new CMFilePointer(self, p);
+	}
 
 	return self->original_funcs->GetFileWide(fs, path);
 }

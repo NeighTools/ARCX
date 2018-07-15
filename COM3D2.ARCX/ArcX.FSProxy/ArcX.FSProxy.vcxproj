@@ -158,11 +158,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArcXFileSystem.h" />
+    <ClInclude Include="CMFilePointer.h" />
     <ClInclude Include="logging.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArcProxy.cpp" />
     <ClCompile Include="ArcXFileSystem.cpp" />
+    <ClCompile Include="CMFilePointer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lib\minhook\build\VC15\libMinHook.vcxproj">

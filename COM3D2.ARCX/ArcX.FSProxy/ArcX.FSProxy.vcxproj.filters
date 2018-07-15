@@ -21,12 +21,18 @@
     <ClInclude Include="ArcXFileSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CMFilePointer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArcProxy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ArcXFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CMFilePointer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
