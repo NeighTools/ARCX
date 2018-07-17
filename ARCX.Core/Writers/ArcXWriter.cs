@@ -203,6 +203,9 @@ namespace ARCX.Core.Writers
 						Reset();
 					}
 
+                    // Fix by Borpis pls no steal :>
+				    file.ChunkID = currentChunk.ID;
+
 					file.Offset = currentChunk.UncompressedLength;
 					currentChunk.UncompressedLength += file.Size;
 
