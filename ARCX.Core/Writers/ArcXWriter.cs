@@ -135,19 +135,19 @@ namespace ARCX.Core.Writers
 
 			long headerOffset = stream.Position;
 
-			//write file header
+            // write header sizes 
 			writer.Write((ulong)generatedChunks.Sum(x => x.Value.LongCount()));
+		    writer.Write(Settings.TargetChunkSize);
+		    writer.Write((ulong)generatedChunks.LongCount());
 
-			foreach (var file in generatedChunks.SelectMany(x => x.Value))
+		    //write file header
+            foreach (var file in generatedChunks.SelectMany(x => x.Value))
 			{
 				file.Write(writer);
 			}
 
-			//write chunk header
-			writer.Write(Settings.TargetChunkSize);
-			writer.Write((ulong)generatedChunks.LongCount());
-
-			foreach (var chunk in generatedChunks)
+		    //write chunk header
+            foreach (var chunk in generatedChunks)
 			{
 				chunk.Key.Write(writer);
 			}
