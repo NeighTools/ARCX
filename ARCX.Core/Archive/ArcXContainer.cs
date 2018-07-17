@@ -36,16 +36,16 @@ namespace ARCX.Core.Archive
 
 			//Read header
 			ulong fileCount = reader.ReadUInt64();
-			List<ArcXFile> files = new List<ArcXFile>((int)fileCount);
+		    TargetChunkSize = reader.ReadUInt32();
+		    ulong chunkCount = reader.ReadUInt64();
+
+            List<ArcXFile> files = new List<ArcXFile>((int)fileCount);
 
 			for (ulong i = 0; i < fileCount; i++)
 				files.Add(new ArcXFile(stream, this));
 
 			Files = files;
-
-			TargetChunkSize = reader.ReadUInt32();
-
-			ulong chunkCount = reader.ReadUInt64();
+			
 			List<ArcXChunk> chunks = new List<ArcXChunk>((int)chunkCount);
 
 			for (ulong i = 0; i < chunkCount; i++)
